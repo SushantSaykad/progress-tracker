@@ -1,0 +1,73 @@
+.app {
+  max-width: 1100px;
+  margin: 0 auto;          /* 👈 center horizontally */
+  padding: 32px 24px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Center header spacing */
+.app h1 {
+  margin-bottom: 20px;
+}
+
+button {
+  background: transparent;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #161b22;
+}
+
+button:focus {
+  outline: none;
+  border-color: #58a6ff;
+}
+button.active {
+  background: #161b22;
+  border-color: #58a6ff;
+}
+.notes-box {
+  margin-top: 24px;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 16px;
+  background: #0d1117;
+}
+
+.notes-box input {
+  background: #010409;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  padding: 8px 10px;
+  border-radius: 8px;
+  width: 260px;
+  margin-right: 10px;
+}
+
+.notes-box table {
+  width: 100%;
+  margin-top: 14px;
+  border-collapse: collapse;
+}
+
+.notes-box th {
+  text-align: left;
+  font-size: 13px;
+  color: #8b949e;
+  padding-bottom: 6px;
+}
+
+.notes-box td {
+  padding: 6px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #21262d;
+}
