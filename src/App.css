@@ -1,26 +1,71 @@
 .app {
-  max-width: 1100px;
-  margin: 0 auto;          /* 👈 center horizontally */
-  padding: 32px 24px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
+  width: 100%;
 }
 
-/* Center header spacing */
+.app-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
 .app h1 {
-  margin-bottom: 20px;
+  margin: 0;
+  color: #c9d1d9;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.logout-button {
+  background: transparent;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.logout-button:hover {
+  background: #161b22;
+  border-color: #f85149;
+  color: #f85149;
 }
 
 button {
   background: transparent;
   color: #c9d1d9;
   border: 1px solid #30363d;
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
   margin-right: 8px;
-  font-size: 14px;
+  font-size: 15px;
+  transition: all 0.2s;
 }
 
 button:hover {
@@ -31,43 +76,186 @@ button:focus {
   outline: none;
   border-color: #58a6ff;
 }
+
 button.active {
   background: #161b22;
   border-color: #58a6ff;
 }
+
 .notes-box {
-  margin-top: 24px;
+  margin-top: 32px;
   border: 1px solid #30363d;
   border-radius: 12px;
-  padding: 16px;
+  padding: 20px;
   background: #0d1117;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.notes-box h3 {
+  margin: 0 0 20px 0;
+  color: #c9d1d9;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.notes-input-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .notes-box input {
   background: #010409;
   border: 1px solid #30363d;
   color: #c9d1d9;
-  padding: 8px 10px;
+  padding: 10px 14px;
   border-radius: 8px;
-  width: 260px;
-  margin-right: 10px;
+  flex: 1;
+  min-width: 200px;
+  font-size: 15px;
+}
+
+.notes-box input:focus {
+  outline: none;
+  border-color: #58a6ff;
+}
+
+.notes-box button {
+  margin-right: 0;
+  padding: 10px 20px;
+  font-size: 15px;
+  white-space: nowrap;
 }
 
 .notes-box table {
   width: 100%;
-  margin-top: 14px;
+  margin-top: 20px;
   border-collapse: collapse;
 }
 
 .notes-box th {
   text-align: left;
-  font-size: 13px;
+  font-size: 14px;
   color: #8b949e;
-  padding-bottom: 6px;
+  padding-bottom: 10px;
+  padding-right: 16px;
 }
 
 .notes-box td {
-  padding: 6px 0;
-  font-size: 14px;
+  padding: 10px 16px 10px 0;
+  font-size: 15px;
   border-bottom: 1px solid #21262d;
+  color: #c9d1d9;
+  word-break: break-word;
+}
+
+.notes-box tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .app {
+    padding: 20px 16px 32px;
+  }
+
+  .app-header {
+    margin-bottom: 24px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .app h1 {
+    font-size: 24px;
+  }
+
+  .logout-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .notes-box {
+    margin-top: 24px;
+    padding: 16px;
+  }
+
+  .notes-box h3 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .notes-input-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .notes-box input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .notes-box button {
+    width: 100%;
+  }
+
+  .notes-box th,
+  .notes-box td {
+    font-size: 13px;
+    padding: 8px 12px 8px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 16px 12px 24px;
+  }
+
+  .app-header {
+    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo-container {
+    width: 100%;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .app h1 {
+    font-size: 20px;
+  }
+
+  .logout-button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .notes-box {
+    padding: 14px;
+    border-radius: 8px;
+  }
+
+  .notes-box h3 {
+    font-size: 16px;
+  }
+
+  .notes-box th,
+  .notes-box td {
+    font-size: 12px;
+    padding: 6px 8px 6px 0;
+  }
+
+  button {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
 }

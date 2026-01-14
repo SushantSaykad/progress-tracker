@@ -1,20 +1,38 @@
+/* ===== View Buttons ===== */
+.view-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.view-buttons button {
+  min-width: 80px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
 /* ===== Tracker Container Box ===== */
 
 .tracker-box {
   border: 1px solid #30363d;
   border-radius: 12px;
-  padding: 16px 18px 20px;
+  padding: 20px;
   background: #0d1117;
-  margin: 0 auto;           
+  margin: 0 auto;
   width: 100%;
   max-width: 1000px;
+  overflow-x: auto;
 }
 
 /* ===== Heatmap Grid ===== */
 .heatmap {
   display: grid;
-  gap: 4px;
+  gap: 6px;
   margin-top: 12px;
+  justify-content: center;
 }
 
 .heatmap.year {
@@ -28,27 +46,99 @@
 
 /* ===== Cells ===== */
 .cell {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 4px;
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
+  background: #161b22;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cell:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 1px #8b949e55;
+  transform: scale(1.2);
+  box-shadow: 0 0 0 2px #8b949e55;
+}
+
+.cell:active {
+  transform: scale(1.1);
 }
 
 /* ===== Color Levels ===== */
+/* You can customize these colors by changing the hex values below */
+
+/* Level 0: Not productive / Unproductive */
 .level-0 {
-  background: #161b22;
+  background-color: #161b22 !important;
 }
 
+/* Level 1: Semi-productive */
 .level-1 {
-  background: #0e4429;
+  background-color: #f59e0b !important; /* Orange/Amber color */
 }
 
+/* Level 2: Productive */
 .level-2 {
-  background: #26a641;
+  background-color: #26a641 !important; /* Green color */
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .tracker-box {
+    padding: 16px;
+  }
+
+  .heatmap {
+    gap: 4px;
+  }
+
+  .cell {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+  }
+
+  .view-buttons {
+    gap: 6px;
+  }
+
+  .view-buttons button {
+    min-width: 70px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tracker-box {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .heatmap.year {
+    gap: 3px;
+  }
+
+  .cell {
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    min-height: 12px;
+    border-radius: 3px;
+  }
+
+  .view-buttons {
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .view-buttons button {
+    min-width: 60px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
 }
