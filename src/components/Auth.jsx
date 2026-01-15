@@ -8,6 +8,8 @@ export default function Auth({ onLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -34,10 +36,8 @@ export default function Auth({ onLogin }) {
       setMessage(error.message);
     } else {
       if (data.user && data.session) {
-        // User is immediately authenticated (email confirmation disabled in Supabase)
         setMessage("Account created successfully!");
       } else {
-        // Email confirmation required
         setMessage("Please check your email to confirm your account before signing in.");
       }
     }
@@ -79,6 +79,58 @@ export default function Auth({ onLogin }) {
     setLoading(false);
   };
 
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) {
+      setMessage(error.message);
+    } else {
+      setMessage("Check your email for password reset link");
+    }
+    setLoading(false);
+  };
+
+  if (showResetPassword) {
+    return (
+      <div className="auth-container">
+        <div className="auth-box">
+          <h2>Reset Password</h2>
+          <form onSubmit={handleResetPassword}>
+            <input
+              type="email"
+              placeholder="Email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              required
+              disabled={loading}
+            />
+            {message && <div className="auth-message">{message}</div>}
+            <button type="submit" disabled={loading}>
+              Send Reset Link
+            </button>
+          </form>
+          <button
+            onClick={() => {
+              setShowResetPassword(false);
+              setMessage("");
+              setResetEmail("");
+            }}
+            className="auth-toggle"
+            disabled={loading}
+          >
+            Back to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="auth-container">
       <div className="auth-box">
@@ -105,6 +157,15 @@ export default function Auth({ onLogin }) {
             {isSignUp ? "Sign Up" : "Sign In"}
           </button>
         </form>
+        {!isSignUp && (
+          <button
+            onClick={() => setShowResetPassword(true)}
+            className="auth-reset-link"
+            disabled={loading}
+          >
+            Forgot Password?
+          </button>
+        )}
         <div className="auth-divider">or</div>
         <button onClick={handleOTPLogin} disabled={loading || !email} className="auth-otp-button">
           Send Magic Link

@@ -27,29 +27,168 @@
   overflow-x: auto;
 }
 
-/* ===== Heatmap Grid ===== */
-.heatmap {
-  display: grid;
-  gap: 6px;
-  margin-top: 12px;
-  justify-content: center;
+/* ===== Year View ===== */
+.year-view-container {
+  display: flex;
+  flex-direction: column;
 }
 
-.heatmap.year {
+.year-header {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  margin-bottom: 8px;
+}
+
+.year-day-labels-left {
+  /* Empty space for alignment */
+}
+
+.year-month-labels {
+  display: grid;
   grid-template-columns: repeat(53, 1fr);
+  gap: 3px;
+  font-size: 11px;
+  color: #8b949e;
+  font-weight: 500;
+  padding-bottom: 0;
+}
+
+.year-month-label {
+  text-align: left;
+  padding-left: 2px;
+}
+
+.year-grid-wrapper {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 0;
+}
+
+.year-day-labels {
+  display: grid;
+  grid-template-rows: repeat(7, 16px);
+  gap: 3px;
+  padding-top: 0;
+  font-size: 11px;
+  color: #8b949e;
+  font-weight: 500;
+  align-items: center;
+}
+
+.year-day-label {
+  text-align: right;
+  padding-right: 8px;
+  height: 16px;
+  line-height: 16px;
+}
+
+/* Position labels: Mon (row 1), Wed (row 3), Fri (row 5) using grid-row */
+.year-day-label:nth-child(1) {
+  grid-row: 2; /* Mon at row 2 (1-indexed, so row 1 is index 1) */
+}
+
+.year-day-label:nth-child(2) {
+  grid-row: 4; /* Wed at row 4 (1-indexed, so row 3 is index 3) */
+}
+
+.year-day-label:nth-child(3) {
+  grid-row: 6; /* Fri at row 6 (1-indexed, so row 5 is index 5) */
+}
+
+.year-heatmap {
+  display: grid;
+  gap: 3px;
+  grid-template-rows: repeat(7, 16px);
+  align-items: start;
+}
+
+.year-week-column {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.year-cell {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  background: #161b22;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.year-empty-cell {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+}
+
+.year-cell:hover:not(.future) {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 1px #8b949e55;
+}
+
+.year-cell.future {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.year-cell.today {
+  border: 1px solid #58a6ff;
+  box-sizing: border-box;
+}
+
+/* ===== Day Labels (Week/Month View) ===== */
+.day-labels.week-month-labels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #8b949e;
+  font-weight: 600;
+  padding: 0;
+  padding-left: 4px; /* Shift right for alignment */
+}
+
+.day-label.week-month-label {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+/* ===== Heatmap Grid (Week/Month) ===== */
+.heatmap {
+  display: grid;
+  gap: 8px;
+  margin-top: 0;
+  justify-content: start;
 }
 
 .heatmap.month,
 .heatmap.week {
   grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
 }
 
-/* ===== Cells ===== */
+.empty-cell {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+/* ===== Cells (Week/Month) ===== */
 .cell {
-  width: 16px;
-  height: 16px;
-  min-width: 16px;
-  min-height: 16px;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
   border-radius: 4px;
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
@@ -58,31 +197,84 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.cell:hover {
-  transform: scale(1.2);
+.cell:hover:not(.future) {
+  transform: scale(1.15);
   box-shadow: 0 0 0 2px #8b949e55;
 }
 
-.cell:active {
-  transform: scale(1.1);
+.cell:active:not(.future) {
+  transform: scale(1.05);
+}
+
+.cell.future {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.cell.today {
+  border: 2px solid #58a6ff;
+  box-sizing: border-box;
 }
 
 /* ===== Color Levels ===== */
-/* You can customize these colors by changing the hex values below */
-
-/* Level 0: Not productive / Unproductive */
-.level-0 {
-  background-color: #161b22 !important;
-}
-
-/* Level 1: Semi-productive */
-.level-1 {
-  background-color: #f59e0b !important; /* Orange/Amber color */
-}
-
-/* Level 2: Productive */
+/* Dark Green for Productive */
 .level-2 {
-  background-color: #26a641 !important; /* Green color */
+  background-color: #0d5d2f !important; /* Dark green */
+}
+
+/* Light Green for Semi-productive */
+.level-1 {
+  background-color: #7dd87d !important; /* Light green */
+}
+
+/* Grayish white for Unproductive */
+.level-0 {
+  background-color: #e5e5e5 !important; /* Grayish white */
+}
+
+.year-cell.level-2 {
+  background-color: #0d5d2f !important;
+}
+
+.year-cell.level-1 {
+  background-color: #7dd87d !important;
+}
+
+.year-cell.level-0 {
+  background-color: #e5e5e5 !important;
+}
+
+/* ===== Color Legend ===== */
+.color-legend {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px 20px;
+  background: #0d1117;
+  margin: 24px auto 0;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-item span {
+  color: #c9d1d9;
+  font-size: 14px;
 }
 
 /* ===== Responsive Design ===== */
@@ -91,15 +283,80 @@
     padding: 16px;
   }
 
-  .heatmap {
-    gap: 4px;
+  .year-month-labels {
+    font-size: 9px;
+    gap: 2px;
   }
 
-  .cell {
+  .year-day-labels {
+    font-size: 9px;
+  }
+
+  .year-day-label {
+    height: 14px;
+    line-height: 14px;
+  }
+
+  .year-heatmap {
+    grid-template-rows: repeat(7, 14px);
+    gap: 2px;
+  }
+
+  .year-week-column {
+    gap: 2px;
+  }
+
+  .year-cell {
     width: 14px;
     height: 14px;
     min-width: 14px;
     min-height: 14px;
+  }
+
+  .year-empty-cell {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+  }
+
+  .heatmap.month,
+  .heatmap.week {
+    gap: 6px;
+  }
+
+  .cell {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .empty-cell {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .day-labels.week-month-labels {
+    gap: 6px;
+    font-size: 10px;
+    padding-left: 3px;
+  }
+
+  .color-legend {
+    padding: 12px 16px;
+    gap: 24px;
+  }
+
+  .legend-box {
+    width: 14px;
+    height: 14px;
+  }
+
+  .legend-item span {
+    font-size: 12px;
   }
 
   .view-buttons {
@@ -119,16 +376,79 @@
     border-radius: 8px;
   }
 
-  .heatmap.year {
-    gap: 3px;
+  .year-month-labels {
+    font-size: 8px;
+    gap: 1px;
   }
 
-  .cell {
+  .year-day-labels {
+    font-size: 8px;
+  }
+
+  .year-day-label {
+    height: 12px;
+    line-height: 12px;
+  }
+
+  .year-heatmap {
+    grid-template-rows: repeat(7, 12px);
+    gap: 1px;
+  }
+
+  .year-cell {
     width: 12px;
     height: 12px;
     min-width: 12px;
     min-height: 12px;
+    border-radius: 2px;
+  }
+
+  .year-empty-cell {
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    min-height: 12px;
+  }
+
+  .heatmap.month,
+  .heatmap.week {
+    gap: 4px;
+  }
+
+  .cell {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
     border-radius: 3px;
+  }
+
+  .empty-cell {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+  }
+
+  .day-labels.week-month-labels {
+    gap: 4px;
+    font-size: 9px;
+    padding-left: 2px;
+  }
+
+  .color-legend {
+    padding: 10px 12px;
+    gap: 16px;
+    border-radius: 6px;
+  }
+
+  .legend-box {
+    width: 12px;
+    height: 12px;
+  }
+
+  .legend-item span {
+    font-size: 11px;
   }
 
   .view-buttons {
